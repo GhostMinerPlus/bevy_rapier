@@ -37,6 +37,9 @@ pub struct ContactForceEvent {
     pub collider2: Entity,
     /// The sum of all the forces between the two colliders.
     pub total_force: Vect,
+    #[cfg(feature = "dim3")]
+    /// The sum of all the tangent forces between the two colliders.
+    pub total_tangent_force: Vect,
     /// The sum of the magnitudes of each force between the two colliders.
     ///
     /// Note that this is **not** the same as the magnitude of `self.total_force`.
@@ -112,6 +115,8 @@ impl<'a> EventHandler for EventQueue<'a> {
             collider1: self.collider2entity(colliders, rapier_event.collider1),
             collider2: self.collider2entity(colliders, rapier_event.collider2),
             total_force: rapier_event.total_force.into(),
+            #[cfg(feature = "dim3")]
+            total_tangent_force: rapier_event.total_tangent_force.into(),
             total_force_magnitude: rapier_event.total_force_magnitude,
             max_force_direction: rapier_event.max_force_direction.into(),
             max_force_magnitude: rapier_event.max_force_magnitude,
